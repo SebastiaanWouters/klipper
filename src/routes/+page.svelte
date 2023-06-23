@@ -87,5 +87,5 @@
     </div>
 {/if}
 {#if finished }
-    <video controls src={videoUrl} />
+    <video width="800" controls src={videoUrl} />
 {/if}

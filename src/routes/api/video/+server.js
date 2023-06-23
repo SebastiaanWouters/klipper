@@ -15,12 +15,13 @@ export async function POST({ request }) {
 
     if (endTime < startTime) {
          throw error(400, {
-                message: 'Something went wrong, check your input'
+                message: 'Something went wrong, check your input',
         });
     }
 
     const videoStream = ytdl(url, {
-        format: 'mp4'
+        format: 'mp4',
+        quality: 'highest' 
     });
 
     let transformStream;
@@ -47,5 +48,12 @@ export async function POST({ request }) {
     }
     
     // Add correct headers
-    return new Response(transformStream)
+    // Add correct headers
+    return new Response(transformStream, {
+        headers: {
+        'Content-Type': 'video/mp4',
+        'Access-Control-Allow-Origin': '*', // Allow requests from any origin
+        'Access-Control-Allow-Methods': 'GET, POST', // Allow GET and POST requests
+        },
+  });
 }
