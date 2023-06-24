@@ -78,7 +78,7 @@
     }
 </script>
 
-<button class="absolute bottom-5 right-5" on:click={() => toast.push("Longer videos take a while to complete", options2)}><img class="w-8" src="info.svg" alt="info" /></button>
+<button class="absolute bottom-5 right-5" on:click={() => toast.push("Longer clips take a while to complete. Leave timing blank to download full vidoes.", options2)}><img class="w-8" src="info.svg" alt="info" /></button>
 
 <div class="flex flex-col w-[95%] max-w-3xl items-center pt-[6rem] lg:pt-28"><h1 class="text-[5.6rem] md:text-[7rem] font-inter uppercase pointer-events-none font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 via-purple-600 to-red-500/50">Klipper</h1>
 {#if !finished}
