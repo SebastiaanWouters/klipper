@@ -2,7 +2,7 @@
   import { fade } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
   import { Stretch } from 'svelte-loading-spinners';
-  import { toast } from '@zerodevx/svelte-toast'
+  import { toast } from '@zerodevx/svelte-toast';
 
     let videoUrl = null;
     let loading = false;
@@ -11,11 +11,20 @@
     let toSec = null, toMin = null;
     let url = null;
     let id = null;
+    let modal;
 
     const options = {
         theme: {
             '--toastColor': 'mintcream',
             '--toastBackground': 'rgba(204,51,0,0.9)',
+            '--toastBarHeight': 0
+        }
+    }
+
+    const options2 = {
+        theme: {
+            '--toastColor': 'mintcream',
+            '--toastBackground': 'rgba(10,10,10,0.9)',
             '--toastBarHeight': 0
         }
     }
@@ -55,6 +64,7 @@
     }
 </script>
 
+<button class="absolute bottom-5 right-5" on:click={() => toast.push("Longer videos take a while to complete", options2)}><img class="w-8" src="info.svg" alt="info" /></button>
 {#if !finished}
     <div class="border-2 border-neutral-700 flex flex-col p-6 gap-2 justify-center items-center bg-[#222222] shadow shadow-neutral-700">
         <form class="">

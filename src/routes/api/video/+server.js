@@ -1,11 +1,15 @@
 import ytdl from 'ytdl-core'
 import ffmpeg from 'fluent-ffmpeg'
 import { error } from '@sveltejs/kit';
+import {Readable} from 'stream';
+import { log } from 'console';
 
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
     const { url, startTime, endTime } = await request.json();
+
+    console.log(startTime, endTime)
 
     if (!ytdl.validateURL(url)) {
         throw error(400, {
@@ -19,24 +23,33 @@ export async function POST({ request }) {
         });
     }
 
-    const videoStream = ytdl(url, {
-        format: 'mp4',
-        quality: 'highest' 
-    });
+    let stream = new Readable()
 
-    let transformStream;
+    // const videoStream = ytdl(url, {
+    //     format: 'mp4',
+    //     range: {start: 10, end: 30}
+    // })
+
+    stream = ytdl(url, {
+         format: 'mp4'
+    })
+
+
+    let transformStream = new Readable();
 
     if (endTime === 0 && startTime == 0) {
-        return new Response(videoStream)
+        //return new Response(videoStream);
+        return new Response(stream);
+
     } else if (startTime > 0 && endTime > startTime) {
-        transformStream = ffmpeg(videoStream)
+        transformStream = ffmpeg(stream)
         .setStartTime(startTime)
         .setDuration(endTime - startTime)
         .format('mp4')
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .pipe();
     } else if (startTime === 0) {
-        transformStream = ffmpeg(videoStream)
+        transformStream = ffmpeg(stream)
         .setDuration(endTime)
         .format('mp4')
         .outputOptions('-movflags frag_keyframe+empty_moov')
@@ -47,13 +60,5 @@ export async function POST({ request }) {
         });
     }
     
-    // Add correct headers
-    // Add correct headers
-    return new Response(transformStream, {
-        headers: {
-        'Content-Type': 'video/mp4',
-        'Access-Control-Allow-Origin': '*', // Allow requests from any origin
-        'Access-Control-Allow-Methods': 'GET, POST', // Allow GET and POST requests
-        },
-  });
+    return new Response(transformStream);
 }
