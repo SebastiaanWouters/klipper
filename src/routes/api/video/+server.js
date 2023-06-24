@@ -9,8 +9,6 @@ import { log } from 'console';
 export async function POST({ request }) {
     const { url, startTime, endTime } = await request.json();
 
-    console.log(startTime, endTime)
-
     if (!ytdl.validateURL(url)) {
         throw error(400, {
                 message: 'Invalid URL, Try Again'
