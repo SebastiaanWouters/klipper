@@ -8,7 +8,7 @@
 </svelte:head>
 
 
-<div class="w-full min-h-screen flex justify-center items-start bg-[#111111] text-neutral-100">
+<div class="w-full min-h-screen flex justify-center items-start text-neutral-100">
   <SvelteToast />
   <slot />
 </div>
